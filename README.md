@@ -1,6 +1,11 @@
 # Bot
 Coin analysis
 
+# Requirement
+
+* [Nodejs](https://nodejs.org/en/) Installed
+* [Redis Cache](https://redis.io/download) Installed
+
 # Install dependencies
 
 ```
