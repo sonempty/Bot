@@ -1,0 +1,11 @@
+{
+  "name": "Bot",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": "https://github.com/sonempty/Bot",
+  "author": "Son & Huy",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}
