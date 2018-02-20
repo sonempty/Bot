@@ -11,9 +11,7 @@ Respond format:
   "author": 'Son + Huy',
   "symbol": 'BTCUSDT',
   "interval": '15m',
-  "ohlc_data": [
-                  ['startTime open close low high volume basevolume '],....
-               ]
+  "ohlc_data": [ 'startTime open close low high volume basevolume', .... ]
 }
 
 ```
