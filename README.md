@@ -1,0 +1,2 @@
+# Bot
+Coin analysis
