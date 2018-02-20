@@ -22,6 +22,14 @@ Respond format:
 
 **interval** : now have only:  15m, 1h, 4h, 1d
 
+**startTime** : beginning time of candle
+
+**open close low high** : candle price
+
+**volume** : volume
+
+**basevolume** : base assert volume
+
 API example
 * [BTC-USDT-1h](http://207.246.113.77:5000/binance/BTCUSDT/15m)
 * [ZEC-ETH-15m](http://207.246.113.77:5000/binance/ZECETH/15m)
