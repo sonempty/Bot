@@ -3,7 +3,7 @@ Coin analysis
 
 # Demo
 APIs are under this form:
-*http://your_domain>:port/binance/symbol/interval*
+*http://your_domain:port/binance/symbol/interval*
 
 *symbol* : is any pairs on exchange. Example BTCUSDT, ETHBTC, NEOSETH, BNBBTC......
 *interval*: now have only:  15m, 1h, 4h, 1d
