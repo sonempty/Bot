@@ -5,9 +5,9 @@ Coin analysis
 APIs are under this form:
 *http://your_domain:port/binance/symbol/interval*
 
-*symbol* : is any pairs on exchange. Example BTCUSDT, ETHBTC, NEOSETH, BNBBTC......
+**symbol** : is any pairs on exchange. Example BTCUSDT, ETHBTC, NEOSETH, BNBBTC......
 
-*interval* : now have only:  15m, 1h, 4h, 1d
+**interval** : now have only:  15m, 1h, 4h, 1d
 
 API example
 * [BTC-USDT-1h](http://207.246.113.77:5000/binance/BTCUSDT/15m)
