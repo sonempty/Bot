@@ -5,6 +5,19 @@ Coin analysis
 APIs are under this form:
 *http://your_domain:port/binance/symbol/interval*
 
+Respond format:
+```javascript
+{
+  "author": 'Son + Huy',
+  "symbol": 'BTCUSDT',
+  "interval": '15m',
+  "ohlc_data": [
+                  ['startTime open close low high volume basevolume '],....
+               ]
+}
+
+```
+
 **symbol** : is any pairs on exchange. Example BTCUSDT, ETHBTC, NEOSETH, BNBBTC......
 
 **interval** : now have only:  15m, 1h, 4h, 1d
