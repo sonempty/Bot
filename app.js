@@ -24,8 +24,7 @@ app.get('/binance/:symbol/:interval', function(req, res) {
   let symbol = req.params.symbol;
   let interval = req.params.interval;
 
-  // use the redis client to get the total number of stars associated to that
-  // username from our redis cache
+  // read data from our redis cache and send to customer
   client.zrange(`binance_${ symbol }_${ interval }`, 0, -1, function(err, result) {
     if (err) {
       console.log('err')
