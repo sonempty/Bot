@@ -17,4 +17,4 @@ axios.get(url) ==>
 	  ],
 	  []...
 	]
-*/client.setex(username, 60, totalStars);
+*/
