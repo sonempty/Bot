@@ -6,6 +6,7 @@
   "author": "Son & Huy",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "redis": "^2.8.0"
   }
 }
