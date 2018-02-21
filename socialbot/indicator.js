@@ -30,8 +30,6 @@ function calculateIndicator(err, symbols) {
             let rows = r.split(' ')
 						let [t1, o1, c1, l1, h1, v1, bv1] = rows
 						t.push(+t1)
-						console.log(new Date(+t1).toLocaleString())
-						/*
 						o.push(+o1)
 						c.push(+c1)
 						l.push(+l1)
