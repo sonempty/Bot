@@ -27,7 +27,6 @@ function calculateIndicator(err, symbols) {
         if (result) {
 					let t = []
           result.forEach(r => {
-						console.log(r)
             let rows = r.split(' ')
 						let [t1, o1, c1, l1, h1, v1, bv1] = rows
 						t.push(+t1)
