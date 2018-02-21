@@ -38,6 +38,14 @@ app.get('/binance/:symbol/:interval', function(req, res) {
   });
 });
 
+app.get('/binance/symbols', function(req, res) {
+  // i.e.: http://localhost:5000/binance/symbols
+  client.get('binance_symbols', function(err, result) {
+    let symbols = result.split(',')
+    res.send(symbols)
+  })
+});
+
 app.listen(app.get('port'), function() {
   console.log('Server listening on port: ', app.get('port'));
 });
