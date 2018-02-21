@@ -3,6 +3,9 @@ const SMA = technicalindicators.SMA;
 const RSI = technicalindicators.RSI;
 const MACD = technicalindicators.MACD;
 
+const {promisify} = require('util');
+const lrange = promisify(client.lrange).bind(client);
+
 // Redis Client to read Data
 let redis = require('redis');
 let client = redis.createClient();
@@ -24,35 +27,28 @@ function calculateIndicator(err, symbols) {
   let intervals = ['15m', '30m', '1h', '4h', '1d']
   intervals.forEach(interval => {
     symbol_list.forEach(symbol => {
-      client.zrange(`binance_${ symbol }_${ interval }`, 70, -1, function(err, result) {
-        if (err) console.log('indicator get data symbol error!', err)
-        if (result) {
-					let t = [], o = [], c = [], l = [], h = [], v = [], bv = []
-          result.forEach(r => {
-            let rows = r.split(' ')
-						let [t1, o1, c1, l1, h1, v1, bv1] = rows
-						t.push(+t1)
-						o.push(+o1)
-						c.push(+c1)
-						l.push(+l1)
-						h.push(+h1)
-						v.push(+v1)
-						bv.push(+bv1)
-          })
-					let sma5 = SMA.calculate({period:5, values:c})
-					let sma10 = SMA.calculate({period:10, values:c})
-					let sma20 = SMA.calculate({period:20, values:c})
-					console.log(`binance_${ symbol }_${ interval }` + ' Time: ' + new Date(t[t.length -1]).toLocaleString() + ' SMA5: ' + sma5)
-					console.log(`binance_${ symbol }_${ interval }` + ' Time: ' + new Date(t[t.length -1]).toLocaleString() + ' SMA10: ' + sma10)
-					console.log(`binance_${ symbol }_${ interval }` + ' Time: ' + new Date(t[t.length -1]).toLocaleString() + ' SMA20: ' + sma20)
-
-					let rsi = RSI.calculate({period:14, values:c})
-					console.log(`binance_${ symbol }_${ interval }` + ' Time: ' + new Date(t[t.length -1]).toLocaleString() + ' RSI: ' + rsi)
-
-					let macd = MACD.calculate({fastPeriod:12, slowPeriod:26, signalPeriod:9, values:c, SimpleMAOscillator:false, SimpleMASignal:false})
-					console.log(`binance_${ symbol }_${ interval }` + ' Time: ' + new Date(t[t.length -1]).toLocaleString() + ' MACD: ' + macd)
-        }
-      })
+			Promise.all([
+				client.lrange(`binance_${ symbol }_${ interval }_t`, 95, -1),
+				client.lrange(`binance_${ symbol }_${ interval }_o`, 95, -1),
+				client.lrange(`binance_${ symbol }_${ interval }_h`, 95, -1),
+				client.lrange(`binance_${ symbol }_${ interval }_l`, 95, -1),
+				client.lrange(`binance_${ symbol }_${ interval }_c`, 95, -1),
+				client.lrange(`binance_${ symbol }_${ interval }_v`, 95, -1),
+				client.lrange(`binance_${ symbol }_${ interval }_qv`, 95, -1),
+				client.lrange(`binance_${ symbol }_${ interval }_bv`, 95, -1),
+				client.lrange(`binance_${ symbol }_${ interval }_bqv`, 95, -1)
+			])
+			.then(function ([t, o, h, l, c, v, qv, bv, bqv]) {
+				console.log(symbol + ' t: ' + t)
+				console.log(symbol + ' o: ' + o)
+				console.log(symbol + ' h: ' + h)
+				console.log(symbol + ' l: ' + l)
+				console.log(symbol + ' c: ' + c)
+				console.log(symbol + ' v: ' + v)
+				console.log(symbol + ' qv: ' + qv)
+				console.log(symbol + ' bv: ' + bv)
+				console.log(symbol + ' bqv: ' + bqv)
+			})
     })
   })
 }
