@@ -70,7 +70,7 @@ function getLastOCLH(symbol, interval) {
       .then(datas => {
         let item = datas.data[0]
         let last = ''
-        client.lrange(`binance_${ symbol }_${ interval }_t`, -1, -1
+        client.lrange(`binance_${ symbol }_${ interval }_t`, -1, -1,
         function (err, res) {
           if(err) console.log('write LastOCLH fail ' + symbol + '  ' + err)
           if(res) {
