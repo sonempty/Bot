@@ -7,10 +7,12 @@ Binance.getTicker();
 // require the dependencies we installed
 let app = require('express')();
 let axios = require('axios');
-let redis = require('redis');
 
 // create a new redis client and connect to our local redis instance
+let redis = require('redis');
 let client = redis.createClient();
+const {promisify} = require('util');
+const lrange = promisify(client.lrange).bind(client);
 
 // if an error occurs, print it to the console
 client.on('error', function(err) {
@@ -26,6 +28,7 @@ app.get('/binance/ohlc/:symbol/:interval', function(req, res) {
   let ohlc_data = {
     author: 'Son + huy',
     api_name: 'ohlc',
+    symbol: symbol,
     interval: interval,
     startTime: [],
     open: [],
@@ -39,80 +42,30 @@ app.get('/binance/ohlc/:symbol/:interval', function(req, res) {
   };
 
   // read data from our redis cache and send to customer
-  client.lrange(`binance_${ symbol }_${ interval }_t`, 0, -1, function(err, result) {
-    if (err) {
-      console.log('get redis startTime err');
-    } else {
-      ohlc_data.startTime = result
-    }
-  });
+  Promise.all([
+    lrange(`binance_${ symbol }_${ interval }_t`, 95, -1),
+    lrange(`binance_${ symbol }_${ interval }_o`, 95, -1),
+    lrange(`binance_${ symbol }_${ interval }_h`, 95, -1),
+    lrange(`binance_${ symbol }_${ interval }_l`, 95, -1),
+    lrange(`binance_${ symbol }_${ interval }_c`, 95, -1),
+    lrange(`binance_${ symbol }_${ interval }_v`, 95, -1),
+    lrange(`binance_${ symbol }_${ interval }_qv`, 95, -1),
+    lrange(`binance_${ symbol }_${ interval }_bv`, 95, -1),
+    lrange(`binance_${ symbol }_${ interval }_bqv`, 95, -1)
+  ])
+  .then(function ([t, o, h, l, c, v, qv, bv, bqv]) {
+    ohlc_data.startTime = t;
+    ohlc_data.open = o;
+    ohlc_data.high = h;
+    ohlc_data.low = l;
+    ohlc_data.close = c;
+    ohlc_data.volume = v;
+    ohlc_data.quoteVolume = qv;
+    ohlc_data.buyVolume = bv;
+    ohlc_data.buyQuoteVolume = bqv;
 
-  client.lrange(`binance_${ symbol }_${ interval }_o`, 0, -1, function(err, result) {
-    if (err) {
-      console.log('get redis open price err');
-    } else {
-      ohlc_data.open = result
-    }
-  });
-
-  client.lrange(`binance_${ symbol }_${ interval }_h`, 0, -1, function(err, result) {
-    if (err) {
-      console.log('get redis high price err');
-    } else {
-      ohlc_data.high = result
-    }
-  });
-
-  client.lrange(`binance_${ symbol }_${ interval }_l`, 0, -1, function(err, result) {
-    if (err) {
-      console.log('get redis low price err');
-    } else {
-      ohlc_data.low = result
-    }
-  });
-
-  client.lrange(`binance_${ symbol }_${ interval }_c`, 0, -1, function(err, result) {
-    if (err) {
-      console.log('get redis close price err');
-    } else {
-      ohlc_data.close = result
-    }
-  });
-
-  client.lrange(`binance_${ symbol }_${ interval }_v`, 0, -1, function(err, result) {
-    if (err) {
-      console.log('get redis volume err');
-    } else {
-      ohlc_data.volume = result
-    }
-  });
-
-  client.lrange(`binance_${ symbol }_${ interval }_qv`, 0, -1, function(err, result) {
-    if (err) {
-      console.log('get redis quote volume err');
-    } else {
-      ohlc_data.quoteVolume = result
-    }
-  });
-
-  client.lrange(`binance_${ symbol }_${ interval }_bv`, 0, -1, function(err, result) {
-    if (err) {
-      console.log('get redis buy volume err');
-    } else {
-      ohlc_data.buyVolume = result
-    }
-  });
-
-  client.lrange(`binance_${ symbol }_${ interval }_bqv`, 0, -1, function(err, result) {
-    if (err) {
-      console.log('get redis buy quote volume err');
-    } else {
-      ohlc_data.buyQuoteVolume = result
-      res.send(ohlc_data)
-    }
-  });
-
-
+    res.send(ohlc_data);
+  })
 });
 
 app.get('/binance/symbols', function(req, res) {
