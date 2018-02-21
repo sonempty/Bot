@@ -25,21 +25,23 @@ function calculateIndicator(err, symbols) {
       client.zrange(`binance_${ symbol }_${ interval }`, 70, -1, function(err, result) {
         if (err) console.log('indicator get data symbol error!', err)
         if (result) {
-					let t = []
+					let t = [], o = [], c = [], l = [], h = [], v = [], bv = []
           result.forEach(r => {
             let rows = r.split(' ')
 						let [t1, o1, c1, l1, h1, v1, bv1] = rows
-						t.push(`binance_${ symbol }_${ interval }  ` + t1)
-						//console.log(`binance_${ symbol }_${ interval }  ` + t1)
+						t.push(+t1)
+						o.push(+o1)
+						c.push(+c1)
+						l.push(+l1)
+						h.push(+h1)
+						v.push(+v1)
+						bv.push(+bv1)
           })
-					console.log('START=======================')
-					console.log(t)
-					console.log('END=======================')
-					//let sma5 = SMA.calculate({period : 5, values : c})
+					let sma5 = SMA.calculate({period : 5, values : c})
 					//let sma10 = SMA.calculate({period : 10, values : c})
 					//let sma20 = SMA.calculate({period : 20, values : c})
 					//console.log(`binance_${ symbol }_${ interval }` + ' ' + t)
-					//console.log(symbol + ' Time: ' + t[t.length -1] + ' SMA5: ' + sma5)
+					console.log(symbol + ' Time: ' + t[t.length -1] + ' SMA5: ' + sma5)
 					//console.log(symbol + ' Time: ' + new Date(t[0]).toLocaleString() + ' SMA10: ' + sma10)
 					//console.log(symbol + ' Time: ' + new Date(t[0]).toLocaleString() + ' SMA20: ' + sma20)
         }
