@@ -1,8 +1,8 @@
 'use strict';
 
 //Run dataservices
-let Binance = require('./dataservices/binance.js')
-Binance.getTicker()
+let Binance = require('./dataservices/binance.js');
+Binance.getTicker();
 
 // require the dependencies we installed
 let app = require('express')();
@@ -27,7 +27,7 @@ app.get('/binance/:symbol/:interval', function(req, res) {
   // read data from our redis cache and send to customer
   client.zrange(`binance_${ symbol }_${ interval }`, 0, -1, function(err, result) {
     if (err) {
-      console.log('err')
+      console.log('err');
     } else {
       res.send({
         "author": 'Son + Huy',

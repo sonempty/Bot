@@ -25,7 +25,7 @@ eventEmitter.on('binance_tickers', initOCLH);
 
 //Init <limit> records for each interval and coin
 async function initOCLH(symbols) {
-  for (let interval of ['15m', '1h', '4h', '1d']) {
+  for (let interval of ['15m', '30m', '1h', '4h', '1d']) {
     for (let symbol of symbols) {
       let limit = 100;
       let url = `${ BINANCE_BASE_URL }klines?symbol=${ symbol }&interval=${ interval }&limit=${ limit }`;
@@ -48,7 +48,7 @@ async function initOCLH(symbols) {
 //Run function `lastOCLH` during time interval
 function getLastOCLH(symbol, interval) {
   let url = `${ BINANCE_BASE_URL }klines?symbol=${ symbol }&interval=${ interval }&limit=1`;
-  let transform_interval = interval == '15m' ? 15 * 60 * 1000 : interval == '1h' ? 60 * 60 * 1000 : interval == '4h' ? 4 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000
+  let transform_interval = interval == '15m' ? 15 * 60 * 1000 : interval == '30m' ? 30 * 60 * 1000 : interval == '1h' ? 60 * 60 * 1000 : interval == '4h' ? 4 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000
   setInterval(() => {
     axios.get(url)
       .then(datas => {
@@ -73,6 +73,7 @@ function getTicker() {
       datas.data.symbols.forEach(item => {
         result.push(item.symbol);
       })
+      client.set('binance_symbols', '' + result)
       eventEmitter.emit('binance_tickers', result);
     })
 }
