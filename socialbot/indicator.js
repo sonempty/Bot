@@ -46,10 +46,10 @@ function calculateIndicator(err, symbols) {
 				let sma5 = [0,0,0,0].concat( SMA.calculate({period:5, values:c}) )  //t.length + 1 - period
 				let sma10 = [0,0,0,0,0,0,0,0,0].concat( SMA.calculate({period:10, values:c}) )
 				let sma20 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0].concat( SMA.calculate({period:20, values:c}) )
-				console.log('t - sma5 length:  ' + t.length + ' ' + sma5.length)
-				console.log('t - sma10 length:  ' + t.length + ' ' + sma10.length)
-				console.log('t - sma20 length:  ' + t.length + ' ' + sma20.length)
-				
+				console.log(`binance_${ symbol }_${ interval }` + ' t - sma5 length:  ' + t.length + ' ' + sma5.length)
+				console.log(`binance_${ symbol }_${ interval }` + ' t - sma10 length:  ' + t.length + ' ' + sma10.length)
+				console.log(`binance_${ symbol }_${ interval }` + ' t - sma20 length:  ' + t.length + ' ' + sma20.length)
+
 				let rsi = RSI.calculate({period:14, values:c})
 
 				let macd = MACD.calculate({fastPeriod:12, slowPeriod:26, signalPeriod:9, values:c, SimpleMAOscillator:false, SimpleMASignal:false})
