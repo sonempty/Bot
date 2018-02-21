@@ -40,9 +40,9 @@ function calculateIndicator(err, symbols) {
 					let sma5 = SMA.calculate({period : 5, values : c})
 					let sma10 = SMA.calculate({period : 10, values : c})
 					let sma20 = SMA.calculate({period : 20, values : c})
-					console.log(symbol + ' Time: ' + new Date(t[t.length - 1]).toLocaleString() + ' SMA5: ' + sma5)
-					console.log(symbol + ' Time: ' + new Date(t[t.length - 1]).toLocaleString() + ' SMA10: ' + sma10)
-					console.log(symbol + ' Time: ' + new Date(t[t.length - 1]).toLocaleString() + ' SMA20: ' + sma20)
+					console.log(symbol + ' Time: ' + new Date(t[0]).toLocaleString() + ' SMA5: ' + sma5)
+					console.log(symbol + ' Time: ' + new Date(t[0]).toLocaleString() + ' SMA10: ' + sma10)
+					console.log(symbol + ' Time: ' + new Date(t[0]).toLocaleString() + ' SMA20: ' + sma20)
         }
       })
     })
