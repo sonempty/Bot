@@ -29,6 +29,7 @@ function calculateIndicator(err, symbols) {
           result.forEach(r => {
             let rows = r.split(' ')
 						let [t1, o1, c1, l1, h1, v1, bv1] = rows
+						console.log(t1)
 						t.push(t1)
 						o.push(+o1)
 						c.push(+c1)
@@ -37,7 +38,7 @@ function calculateIndicator(err, symbols) {
 						v.push(+v1)
 						bv.push(+bv1)
           })
-					console.log(t)
+					//console.log(t1)
 					/*
 
 					let sma5 = SMA.calculate({period : 5, values : c})
