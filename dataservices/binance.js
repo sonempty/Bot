@@ -27,7 +27,7 @@ eventEmitter.on('binance_tickers', initOCLH);
 async function initOCLH(symbols) {
   for (let interval of ['15m', '30m', '1h', '4h', '1d']) {
     for (let symbol of symbols) {
-      let limit = 100;
+      let limit = 230;
       let url = `${ BINANCE_BASE_URL }klines?symbol=${ symbol }&interval=${ interval }&limit=${ limit }`;
       client.del(`binance_${ symbol }_${ interval }_t`)
       client.del(`binance_${ symbol }_${ interval }_o`)

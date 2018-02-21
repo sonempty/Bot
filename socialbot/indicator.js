@@ -29,15 +29,15 @@ function calculateIndicator(err, symbols) {
   intervals.forEach(interval => {
     symbol_list.forEach(symbol => {
 			Promise.all([
-				lrange(`binance_${ symbol }_${ interval }_t`, 95, -1),
-				lrange(`binance_${ symbol }_${ interval }_o`, 95, -1),
-				lrange(`binance_${ symbol }_${ interval }_h`, 95, -1),
-				lrange(`binance_${ symbol }_${ interval }_l`, 95, -1),
-				lrange(`binance_${ symbol }_${ interval }_c`, 95, -1),
-				lrange(`binance_${ symbol }_${ interval }_v`, 95, -1),
-				lrange(`binance_${ symbol }_${ interval }_qv`, 95, -1),
-				lrange(`binance_${ symbol }_${ interval }_bv`, 95, -1),
-				lrange(`binance_${ symbol }_${ interval }_bqv`, 95, -1)
+				lrange(`binance_${ symbol }_${ interval }_t`, 0, -1),
+				lrange(`binance_${ symbol }_${ interval }_o`, 0, -1),
+				lrange(`binance_${ symbol }_${ interval }_h`, 0, -1),
+				lrange(`binance_${ symbol }_${ interval }_l`, 0, -1),
+				lrange(`binance_${ symbol }_${ interval }_c`, 0, -1),
+				lrange(`binance_${ symbol }_${ interval }_v`, 0, -1),
+				lrange(`binance_${ symbol }_${ interval }_qv`, 0, -1),
+				lrange(`binance_${ symbol }_${ interval }_bv`, 0, -1),
+				lrange(`binance_${ symbol }_${ interval }_bqv`, 0, -1)
 			])
 			.then(function ([t, o, h, l, c, v, qv, bv, bqv]) {
 				let sma5 = SMA.calculate({period:5, values:c})
