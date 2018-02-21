@@ -43,19 +43,17 @@ function calculateIndicator(err, symbols) {
 				//convert to number
 				[t, o, h, l, c, v, qv, bv, bqv] = [t, o, h, l, c, v, qv, bv, bqv].map(item => item.map(x => +x))
 
-				let sma5 = SMA.calculate({period:5, values:c})
-				let sma10 = SMA.calculate({period:10, values:c})
-				let sma20 = SMA.calculate({period:20, values:c})
-				console.log(`binance_${ symbol }_${ interval }` + ' Time: ' + new Date(t[t.length -1]).toLocaleString() + ' SMA5: ' + sma5)
-				console.log(`binance_${ symbol }_${ interval }` + ' Time: ' + new Date(t[t.length -1]).toLocaleString() + ' SMA10: ' + sma10)
-				console.log(`binance_${ symbol }_${ interval }` + ' Time: ' + new Date(t[t.length -1]).toLocaleString() + ' SMA20: ' + sma20)
-
+				let sma5 = [0,0,0,0].concat( SMA.calculate({period:5, values:c}) )  //t.length + 1 - period
+				let sma10 = [0,0,0,0,0,0,0,0,0].concat( SMA.calculate({period:10, values:c}) )
+				let sma20 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0].concat( SMA.calculate({period:20, values:c}) )
+				console.log('t - sma5 length:  ' + t.length + ' ' + sma5.length)
+				console.log('t - sma10 length:  ' + t.length + ' ' + sma10.length)
+				console.log('t - sma20 length:  ' + t.length + ' ' + sma20.length)
+				
 				let rsi = RSI.calculate({period:14, values:c})
-				console.log(`binance_${ symbol }_${ interval }` + ' Time: ' + new Date(t[t.length -1]).toLocaleString() + ' RSI: ' + rsi)
 
 				let macd = MACD.calculate({fastPeriod:12, slowPeriod:26, signalPeriod:9, values:c, SimpleMAOscillator:false, SimpleMASignal:false})
-				console.log(`binance_${ symbol }_${ interval }` + ' Time: ' + new Date(t[t.length -1]).toLocaleString() + ' MACD: ' + macd)
-				
+
 			})
     })
   })
