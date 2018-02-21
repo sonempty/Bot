@@ -42,7 +42,7 @@ function calculateIndicator(err, symbols) {
 			.then(function ([t, o, h, l, c, v, qv, bv, bqv]) {
 				//convert to number
 				[t, o, h, l, c, v, qv, bv, bqv] = [t, o, h, l, c, v, qv, bv, bqv].forEach(item => {
-					return item.forEach(x => return +x)
+					return item.forEach(x => { return +x })
 				})
 
 				let sma5 = SMA.calculate({period:5, values:c})
@@ -57,7 +57,7 @@ function calculateIndicator(err, symbols) {
 
 				let macd = MACD.calculate({fastPeriod:12, slowPeriod:26, signalPeriod:9, values:c, SimpleMAOscillator:false, SimpleMASignal:false})
 				console.log(`binance_${ symbol }_${ interval }` + ' Time: ' + new Date(t[t.length -1]).toLocaleString() + ' MACD: ' + macd)
-				
+
 			})
     })
   })
