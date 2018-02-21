@@ -27,8 +27,9 @@ function calculateIndicator(err, symbols) {
         if (err) console.log('indicator get data symbol error!', err)
         if (result) {
           result.forEach(r => {
+						console.log(typeof(r))
             let rows = r.split(' ')
-						console.log(rows)
+						console.log(typeof(rows))
 						let [t1, o1, c1, l1, h1, v1, bv1] = rows
 						t.push(+t1)
 						o.push(+o1)
