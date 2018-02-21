@@ -3,12 +3,13 @@ const SMA = technicalindicators.SMA;
 const RSI = technicalindicators.RSI;
 const MACD = technicalindicators.MACD;
 
-const {promisify} = require('util');
-const lrange = promisify(client.lrange).bind(client);
-
 // Redis Client to read Data
 let redis = require('redis');
 let client = redis.createClient();
+
+const {promisify} = require('util');
+const lrange = promisify(client.lrange).bind(client);
+
 client.on('error', function(err) {
   console.log("Error " + err);
 });
