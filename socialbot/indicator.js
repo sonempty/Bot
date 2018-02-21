@@ -23,13 +23,12 @@ function calculateIndicator(err, symbols) {
   intervals.forEach(interval => {
     symbol_list.forEach(symbol => {
       client.zrange(`binance_${ symbol }_${ interval }`, 70, -1, function(err, result) {
-				let t = []
         if (err) console.log('indicator get data symbol error!', err)
         if (result) {
+					let t = []
           result.forEach(r => {
 						console.log(r)
             let rows = r.split(' ')
-						console.log(typeof(rows))
 						let [t1, o1, c1, l1, h1, v1, bv1] = rows
 						t.push(+t1)
           })
