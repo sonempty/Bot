@@ -69,6 +69,4 @@ function calculateIndicator(err, symbols) {
   })
 }
 
-calculate_indicator();
-
 module.exports.calculate_indicator = calculate_indicator;
