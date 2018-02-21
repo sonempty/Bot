@@ -39,7 +39,7 @@ Example:
 
 ## Get all tickers
 
-*http://localhost:5000/binance/symbols*
+*http://your_domain:port/binance/symbols*
 
 Respond format:
 
