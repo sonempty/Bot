@@ -1,9 +1,11 @@
 # Bot
 Coin analysis
 
-# Demo
+# API
+
+## Get OHLC API
 APIs are under this form:
-*http://your_domain:port/binance/symbol/interval*
+*http://your_domain:port/binance/symbol/interval* to get ohcl
 
 Respond format:
 ```javascript
@@ -28,10 +30,24 @@ Respond format:
 
 **basevolume** : base assert volume
 
-API example
+Example:
 * [BTC-USDT-1h](http://207.246.113.77:5000/binance/BTCUSDT/15m)
 * [ZEC-ETH-15m](http://207.246.113.77:5000/binance/ZECETH/15m)
 * [STRAT-BTC-1D](http://207.246.113.77:5000/binance/STRATBTC/1d)
+
+## Get all tickers
+
+*http://localhost:5000/binance/symbols* to get all tickers
+
+Respond format:
+
+```javascript
+[BTCUSDT, BNBETH, .....]
+```
+
+Example:
+* [BTC-USDT-1h](http://207.246.113.77:5000/binance/symbols)
+
 
 # Requirement
 
