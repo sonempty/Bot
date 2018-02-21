@@ -14,7 +14,9 @@ client.on('error', function(err) {
 });
 
 // Get all symbols and calculate all indicator
-client.get('binance_symbols', calculateIndicator)
+function calculate_indicator() {
+	client.get('binance_symbols', calculateIndicator)
+}
 
 function calculateIndicator(err, symbols) {
 
@@ -66,3 +68,7 @@ function calculateIndicator(err, symbols) {
     })
   })
 }
+
+calculate_indicator();
+
+module.exports.calculate_indicator = calculate_indicator;

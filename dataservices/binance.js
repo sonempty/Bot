@@ -25,6 +25,7 @@ eventEmitter.on('binance_tickers', initOCLH);
 
 //Init <limit> records for each interval and coin
 async function initOCLH(symbols) {
+  client.set('finish_init', 'no')
   for (let interval of ['15m', '30m', '1h', '4h', '1d']) {
     for (let symbol of symbols) {
       let limit = 230;
@@ -59,6 +60,7 @@ async function initOCLH(symbols) {
       getLastOCLH(symbol, interval);
     }
   }
+  client.set('finish_init', 'yes')
 }
 
 //Run function `lastOCLH` during time interval

@@ -4,6 +4,18 @@
 let Binance = require('./dataservices/binance.js');
 Binance.getTicker();
 
+//Run social bot
+let Indicator = require('./socialbot/indicator.js');
+let timer = setInterval(function(){
+  client.get('finish_init', function(err, result) {
+    if(result == 'yes') {
+      Indicator.calculate_indicator();
+      clearInterval(timer)
+    }
+  })
+}, 10*60*1000)
+
+
 // require the dependencies we installed
 let app = require('express')();
 let axios = require('axios');
@@ -91,7 +103,8 @@ app.get('/binance/indicator/:symbol/:interval/:indicator', function(req, res) {
     symbol: symbol,
     interval: interval,
     startTime: [],
-    indicator_type: indicator[indicator]: []
+    indicator_type: indicator,
+    [indicator]: []
   };
 
   // read data from our redis cache and send to customer
