@@ -30,7 +30,7 @@ function calculateIndicator(err, symbols) {
             let rows = r.split(' ')
 						let [t1, o1, c1, l1, h1, v1, bv1] = rows
 						t.push(+t1)
-						console.log(t1)
+						console.log(`binance_${ symbol }_${ interval }  ` + t1)
           })
 					//let sma5 = SMA.calculate({period : 5, values : c})
 					//let sma10 = SMA.calculate({period : 10, values : c})
