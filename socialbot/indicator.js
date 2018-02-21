@@ -29,7 +29,6 @@ function calculateIndicator(err, symbols) {
           result.forEach(r => {
             let rows = r.split(' ')
 						let [t1, o1, c1, l1, h1, v1, bv1] = rows
-						console.log(t1)
 						t.push(t1)
 						o.push(+o1)
 						c.push(+c1)
@@ -37,17 +36,13 @@ function calculateIndicator(err, symbols) {
 						h.push(+h1)
 						v.push(+v1)
 						bv.push(+bv1)
+						let sma5 = SMA.calculate({period : 5, values : c})
+						let sma10 = SMA.calculate({period : 10, values : c})
+						let sma20 = SMA.calculate({period : 20, values : c})
+						console.log(symbol + ' Time: ' + new Date(t[t.length - 1]).toLocaleString() + ' SMA5: ' + sma5)
+						console.log(symbol + ' Time: ' + new Date(t[t.length - 1]).toLocaleString() + ' SMA10: ' + sma10)
+						console.log(symbol + ' Time: ' + new Date(t[t.length - 1]).toLocaleString() + ' SMA20: ' + sma20)
           })
-					//console.log(t1)
-					/*
-
-					let sma5 = SMA.calculate({period : 5, values : c})
-          let sma10 = SMA.calculate({period : 10, values : c})
-					let sma20 = SMA.calculate({period : 20, values : c})
-					console.log(symbol + ' Time: ' + new Date(t[t.length - 1]).toLocaleString() + ' SMA5: ' + sma5)
-					console.log(symbol + ' Time: ' + new Date(t[t.length - 1]).toLocaleString() + ' SMA10: ' + sma10)
-					console.log(symbol + ' Time: ' + new Date(t[t.length - 1]).toLocaleString() + ' SMA20: ' + sma20)
-					*/
         }
       })
     })
