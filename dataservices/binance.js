@@ -29,16 +29,32 @@ async function initOCLH(symbols) {
     for (let symbol of symbols) {
       let limit = 100;
       let url = `${ BINANCE_BASE_URL }klines?symbol=${ symbol }&interval=${ interval }&limit=${ limit }`;
-      client.del(`binance_${ symbol }_${ interval }`)
+      client.del(`binance_${ symbol }_${ interval }_t`)
+      client.del(`binance_${ symbol }_${ interval }_o`)
+      client.del(`binance_${ symbol }_${ interval }_h`)
+      client.del(`binance_${ symbol }_${ interval }_l`)
+      client.del(`binance_${ symbol }_${ interval }_c`)
+      client.del(`binance_${ symbol }_${ interval }_v`)
+      client.del(`binance_${ symbol }_${ interval }_qv`)
+      client.del(`binance_${ symbol }_${ interval }_bv`)
+      client.del(`binance_${ symbol }_${ interval }_bqv`)
+
       await sleep(500);
       let result = await axios.get(url);
       let items = result.data
       items.forEach(item => {
         //Update to Redis Cache
-        // startTime - startTime, o, c, l, h, vol, basevol
-        client.zadd(`binance_${ symbol }_${ interval }`, item[0], `${ item[0] } ${ item[1] } ${ item[4] } ${ item[3] } ${ item[2] } ${ item[5] } ${ item[7] }`)
+        // startTime - startTime, o, c, l, h, vol, quotevol, buyvol, vuyquotevol
+        client.rpush(`binance_${ symbol }_${ interval }_t`, item[0])
+        client.rpush(`binance_${ symbol }_${ interval }_o`, item[1])
+        client.rpush(`binance_${ symbol }_${ interval }_h`, item[2])
+        client.rpush(`binance_${ symbol }_${ interval }_l`, item[3])
+        client.rpush(`binance_${ symbol }_${ interval }_c`, item[4])
+        client.rpush(`binance_${ symbol }_${ interval }_v`, item[5])
+        client.rpush(`binance_${ symbol }_${ interval }_qv`, item[7])
+        client.rpush(`binance_${ symbol }_${ interval }_bv`, item[9])
+        client.rpush(`binance_${ symbol }_${ interval }_bqv`, item[10])
       })
-
       //Call last Update
       getLastOCLH(symbol, interval);
     }
@@ -53,14 +69,42 @@ function getLastOCLH(symbol, interval) {
     axios.get(url)
       .then(datas => {
         let item = datas.data[0]
-        client.zadd(`binance_${ symbol }_${ interval }`,
-          item[0],
-          `${ item[0] } ${ item[1] } ${ item[4] } ${ item[3] } ${ item[2] } ${ item[5] } ${ item[7] }`,
+        let last = ''
+        client.lrange(`binance_${ symbol }_${ interval }_t`, -1, -1
         function (err, res) {
-          if(err) console.log('getLastOCLH fail ' + symbol + '  ' + err)
-          if(res) client.ZREMRANGEBYRANK(`binance_${ symbol }_${ interval }`, 0, 0)
+          if(err) console.log('write LastOCLH fail ' + symbol + '  ' + err)
+          if(res) {
+            let [last] = res
+            if( (+last) === (+item[0]) ) {
+              client.rpush(`binance_${ symbol }_${ interval }_t`, +item[0])
+              client.lpop(`binance_${ symbol }_${ interval }_t`)
+
+              client.rpush(`binance_${ symbol }_${ interval }_o`, +item[1])
+              client.lpop(`binance_${ symbol }_${ interval }_o`)
+
+              client.rpush(`binance_${ symbol }_${ interval }_h`, +item[2])
+              client.lpop(`binance_${ symbol }_${ interval }_h`)
+
+              client.rpush(`binance_${ symbol }_${ interval }_l`, +item[3])
+              client.lpop(`binance_${ symbol }_${ interval }_l`)
+
+              client.rpush(`binance_${ symbol }_${ interval }_c`, +item[4])
+              client.lpop(`binance_${ symbol }_${ interval }_c`)
+
+              client.rpush(`binance_${ symbol }_${ interval }_v`, +item[5])
+              client.lpop(`binance_${ symbol }_${ interval }_v`)
+
+              client.rpush(`binance_${ symbol }_${ interval }_qv`, +item[7])
+              client.lpop(`binance_${ symbol }_${ interval }_qv`)
+
+              client.rpush(`binance_${ symbol }_${ interval }_bv`, +item[9])
+              client.lpop(`binance_${ symbol }_${ interval }_bv`)
+
+              client.rpush(`binance_${ symbol }_${ interval }_bqv`, +item[10])
+              client.lpop(`binance_${ symbol }_${ interval }_bqv`)
+            }
+          }
         })
-        console.log(symbol + ' -- ' + transform_interval + ':   ' + datas.data[0])
       })
   }, 1.01 * transform_interval)
 }
