@@ -58,27 +58,3 @@ function calculateIndicator(err, symbols) {
     })
   })
 }
-
-
-const settings = {
-  array_length: 30,
-
-  sma5_period: 5,
-  sma10_period: 10,
-  sma20_period: 20,
-
-  ema_period: 10,
-
-  macd_fastPeriod: 12,
-  macd_slowPeriod: 26,
-  macd_signalPeriod: 9,
-
-  rsi_period: 14,
-
-  bbands_period: 20,
-  bbands_stdDev: 2,
-
-  mfi_period: 14,
-
-  willr_period: 14
-}
