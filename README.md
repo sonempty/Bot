@@ -4,8 +4,10 @@ Coin analysis
 # API
 
 ## Get OHLC API
+
 APIs are under this form:
-*http://your_domain:port/binance/symbol/interval* to get ohcl
+
+*http://your_domain:port/binance/symbol/interval*
 
 Respond format:
 ```javascript
@@ -37,7 +39,7 @@ Example:
 
 ## Get all tickers
 
-*http://localhost:5000/binance/symbols* to get all tickers
+*http://localhost:5000/binance/symbols*
 
 Respond format:
 
@@ -46,7 +48,7 @@ Respond format:
 ```
 
 Example:
-* [BTC-USDT-1h](http://207.246.113.77:5000/binance/symbols)
+* [Get all tickers](http://207.246.113.77:5000/binance/symbols)
 
 
 # Requirement
