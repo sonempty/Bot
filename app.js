@@ -108,10 +108,11 @@ app.get('/binance/ohlc/:symbol/:interval', function(req, res) {
       console.log('get redis buy quote volume err');
     } else {
       ohlc_data.buyQuoteVolume = result
+      res.send(ohlc_data)
     }
   });
 
-  res.send(ohlc_data)
+
 });
 
 app.get('/binance/symbols', function(req, res) {
