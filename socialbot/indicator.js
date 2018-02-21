@@ -41,7 +41,7 @@ function calculateIndicator(err, symbols) {
 					//let sma10 = SMA.calculate({period : 10, values : c})
 					//let sma20 = SMA.calculate({period : 20, values : c})
 					//console.log(`binance_${ symbol }_${ interval }` + ' ' + t)
-					console.log(symbol + ' Time: ' + t[t.length -1] + ' SMA5: ' + sma5)
+					console.log(symbol + ' Time: ' + new Date(t[t.length -1]).toLocaleString() + ' SMA5: ' + sma5)
 					//console.log(symbol + ' Time: ' + new Date(t[0]).toLocaleString() + ' SMA10: ' + sma10)
 					//console.log(symbol + ' Time: ' + new Date(t[0]).toLocaleString() + ' SMA20: ' + sma20)
         }
