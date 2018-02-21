@@ -42,7 +42,7 @@ function calculateIndicator(err, symbols) {
 						console.log(symbol + ' Time: ' + new Date(t[t.length - 1]).toLocaleString() + ' SMA5: ' + sma5)
 						console.log(symbol + ' Time: ' + new Date(t[t.length - 1]).toLocaleString() + ' SMA10: ' + sma10)
 						console.log(symbol + ' Time: ' + new Date(t[t.length - 1]).toLocaleString() + ' SMA20: ' + sma20)
-						*/
+						
           })
         }
       })
