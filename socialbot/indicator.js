@@ -6,7 +6,6 @@ const MACD = technicalindicators.MACD;
 // Redis Client to read Data
 let redis = require('redis');
 let client = redis.createClient();
-
 const {promisify} = require('util');
 const lrange = promisify(client.lrange).bind(client);
 
@@ -46,9 +45,18 @@ function calculateIndicator(err, symbols) {
 				let sma5 = [0,0,0,0].concat( SMA.calculate({period:5, values:c}) )  //t.length + 1 - period
 				let sma10 = [0,0,0,0,0,0,0,0,0].concat( SMA.calculate({period:10, values:c}) )
 				let sma20 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0].concat( SMA.calculate({period:20, values:c}) )
-				console.log(`binance_${ symbol }_${ interval }` + ' t - sma5 length:  ' + t.length + ' ' + sma5.length)
-				console.log(`binance_${ symbol }_${ interval }` + ' t - sma10 length:  ' + t.length + ' ' + sma10.length)
-				console.log(`binance_${ symbol }_${ interval }` + ' t - sma20 length:  ' + t.length + ' ' + sma20.length)
+				sma5.forEach(x => {
+					client.del(`binance_${ symbol }_${ interval }_sma5`)
+					client.rpush(`binance_${ symbol }_${ interval }_sma5`, x)
+				})
+				sma10.forEach(x => {
+					client.del(`binance_${ symbol }_${ interval }_sma10`)
+					client.rpush(`binance_${ symbol }_${ interval }_sma10`, x)
+				})
+				sma20.forEach(x => {
+					client.del(`binance_${ symbol }_${ interval }_sma20`)
+					client.rpush(`binance_${ symbol }_${ interval }_sma20`, x)
+				})
 
 				let rsi = RSI.calculate({period:14, values:c})
 
