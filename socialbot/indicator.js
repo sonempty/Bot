@@ -23,9 +23,9 @@ function calculateIndicator(err, symbols) {
   intervals.forEach(interval => {
     symbol_list.forEach(symbol => {
       client.zrange(`binance_${ symbol }_${ interval }`, 70, -1, function(err, result) {
+				let t = o = c = l = h = v = bv = []
         if (err) console.log('indicator get data symbol error!', err)
         if (result) {
-          let t = o = c = l = h = v = bv = []
           result.forEach(r => {
             let rows = r.split(' ')
 						let [t1, o1, c1, l1, h1, v1, bv1] = rows
