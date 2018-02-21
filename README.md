@@ -1,11 +1,9 @@
 # Bot
 Coin analysis
 
-# API
+# APIs
 
 ## Get OHLC API
-
-APIs are under this form:
 
 *http://your_domain:port/binance/symbol/interval*
 
@@ -37,7 +35,7 @@ Example:
 * [ZEC-ETH-15m](http://207.246.113.77:5000/binance/ZECETH/15m)
 * [STRAT-BTC-1D](http://207.246.113.77:5000/binance/STRATBTC/1d)
 
-## Get all tickers
+## Get all tickers API
 
 *http://your_domain:port/binance/symbols*
 
