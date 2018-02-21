@@ -29,15 +29,15 @@ function calculateIndicator(err, symbols) {
   intervals.forEach(interval => {
     symbol_list.forEach(symbol => {
 			Promise.all([
-				client.lrange(`binance_${ symbol }_${ interval }_t`, 95, -1),
-				client.lrange(`binance_${ symbol }_${ interval }_o`, 95, -1),
-				client.lrange(`binance_${ symbol }_${ interval }_h`, 95, -1),
-				client.lrange(`binance_${ symbol }_${ interval }_l`, 95, -1),
-				client.lrange(`binance_${ symbol }_${ interval }_c`, 95, -1),
-				client.lrange(`binance_${ symbol }_${ interval }_v`, 95, -1),
-				client.lrange(`binance_${ symbol }_${ interval }_qv`, 95, -1),
-				client.lrange(`binance_${ symbol }_${ interval }_bv`, 95, -1),
-				client.lrange(`binance_${ symbol }_${ interval }_bqv`, 95, -1)
+				lrange(`binance_${ symbol }_${ interval }_t`, 95, -1),
+				lrange(`binance_${ symbol }_${ interval }_o`, 95, -1),
+				lrange(`binance_${ symbol }_${ interval }_h`, 95, -1),
+				lrange(`binance_${ symbol }_${ interval }_l`, 95, -1),
+				lrange(`binance_${ symbol }_${ interval }_c`, 95, -1),
+				lrange(`binance_${ symbol }_${ interval }_v`, 95, -1),
+				lrange(`binance_${ symbol }_${ interval }_qv`, 95, -1),
+				lrange(`binance_${ symbol }_${ interval }_bv`, 95, -1),
+				lrange(`binance_${ symbol }_${ interval }_bqv`, 95, -1)
 			])
 			.then(function ([t, o, h, l, c, v, qv, bv, bqv]) {
 				console.log(symbol + ' t: ' + t)
