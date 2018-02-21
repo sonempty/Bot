@@ -1,4 +1,5 @@
-const tulind = require('tulind');
+const technicalindicators = require('technicalindicators')
+const SMA = technicalindicators.SMA
 
 // Redis Client to read Data
 let redis = require('redis');
@@ -16,7 +17,7 @@ function calculateIndicator(err, symbols) {
 		console.log('Get symbols from Redis error', err)
 		return
 	}
-	
+
   let symbol_list = symbols.split(',')
   let intervals = ['15m', '30m', '1h', '4h', '1d']
   intervals.forEach(interval => {
@@ -37,45 +38,12 @@ function calculateIndicator(err, symbols) {
 						bv.push(bv1)
           })
 
-          tulind.indicators.sma.indicator([c], [settings.sma5_period], function(err, results) {
-            console.log(symbol + ' SMA5 :' + results[0])
-          });
-          tulind.indicators.sma.indicator([c], [settings.sma10_period], function(err, results) {
-            console.log(symbol + ' SMA10 :' + [results[0])
-          });
-
-          tulind.indicators.sma.indicator([c], [settings.sma20_period], function(err, results) {
-            console.log(symbol + ' SMA20 :' + results[0])
-          });
-
-          tulind.indicators.macd.indicator([c], [settings.macd_fastPeriod, settings.macd_slowPeriod, settings.macd_signalPeriod], function(err, results) {
-            console.log(symbol + ' MACD-MACD :' + results[0])
-            console.log(symbol + ' MACD-Signal :' + [results[1])
-            console.log(symbol + ' MACD-Histogram :' + [results[2])
-          });
-
-          tulind.indicators.rsi.indicator([c], [settings.rsi_period], function(err, results) {
-            console.log(symbol + ' RSI :' + [results[0])
-          });
-
-          tulind.indicators.bbands.indicator([c], [settings.bbands_period, settings.bbands_stdDev], function(err, results) {
-            console.log(symbol + ' BB-Upper: ' + results[0])
-            console.log(symbol + ' BB-Middle: ' + results[1])
-            console.log(symbol + ' BB-Lower: ' + results[2])
-          });
-
-          tulind.indicators.mfi.indicator([h, l, c, v], [settings.mfi_period], function(err, results) {
-            console.log(symbol + ' MFI: ' + [results[0])
-          });
-
-          tulind.indicators.willr.indicator([h, l, c], [settings.willr_period], function(err, results) {
-            console.log(symbol + ' Will%R: ' + results[0])
-          });
-
-          tulind.indicators.stoch.indicator([h, l, c], [14, 3, 3], function(err, results) {
-            console.log(symbol + ' Stoch-K: ' + results[0])
-            console.log(symbol + ' Stoch-D: ' + results[1])
-          });
+					let sma5 = SMA.calculate({period : 5, values : c})
+          let sma10 = SMA.calculate({period : 10, values : c})
+					let sma20 = SMA.calculate({period : 20, values : c})
+					console.log(symbol + ' Time: ' + t[t.length - 1].toLocaleString() + ' SMA5: ' + sma5)
+					console.log(symbol + ' Time: ' + t[t.length - 1].toLocaleString() + ' SMA10: ' + sma10)
+					console.log(symbol + ' Time: ' + t[t.length - 1].toLocaleString() + ' SMA20: ' + sma20)
         }
       })
     })
