@@ -20,6 +20,10 @@ let timer = setInterval(function(){
 let app = require('express')();
 let axios = require('axios');
 
+// cross origin
+const cors = require('cors');
+app.use(cors());
+
 const INDICATOR_LIST = ['sma5', 'sma10', 'sma20'];
 
 // create a new redis client and connect to our local redis instance
