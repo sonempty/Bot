@@ -47,15 +47,15 @@ app.get('/binance/ohlc/:symbol/:interval', function(req, res) {
 
   // read data from our redis cache and send to customer
   Promise.all([
-      lrange(`binance_${ symbol }_${ interval }_t`, -1, -1),
-      lrange(`binance_${ symbol }_${ interval }_o`, -1, -1),
-      lrange(`binance_${ symbol }_${ interval }_h`, -1, -1),
-      lrange(`binance_${ symbol }_${ interval }_l`, -1, -1),
-      lrange(`binance_${ symbol }_${ interval }_c`, -1, -1),
-      lrange(`binance_${ symbol }_${ interval }_v`, -1, -1),
-      lrange(`binance_${ symbol }_${ interval }_qv`, -1, -1),
-      lrange(`binance_${ symbol }_${ interval }_bv`, -1, -1),
-      lrange(`binance_${ symbol }_${ interval }_bqv`, -1, -1)
+      lrange(`binance_${ symbol }_${ interval }_t`, 0, -1),
+      lrange(`binance_${ symbol }_${ interval }_o`, 0, -1),
+      lrange(`binance_${ symbol }_${ interval }_h`, 0, -1),
+      lrange(`binance_${ symbol }_${ interval }_l`, 0, -1),
+      lrange(`binance_${ symbol }_${ interval }_c`, 0, -1),
+      lrange(`binance_${ symbol }_${ interval }_v`, 0, -1),
+      lrange(`binance_${ symbol }_${ interval }_qv`, 0, -1),
+      lrange(`binance_${ symbol }_${ interval }_bv`, 0, -1),
+      lrange(`binance_${ symbol }_${ interval }_bqv`, 0, -1)
     ])
     .then(function([t, o, h, l, c, v, qv, bv, bqv]) {
       ohlc_data.startTime = t;
