@@ -26,7 +26,7 @@ client.on('error', function(err) {
 app.set('port', (process.env.PORT || 5000));
 
 app.get('/binance/ohlc/:symbol/:interval', function(req, res) {
-  // i.e.: http://localhost:5000/binance/ohlc/btcusdt/15m
+  // i.e.: http://localhost:5000/binance/ohlc/btcusdt/1h
   let symbol = req.params.symbol;
   let interval = req.params.interval;
   let ohlc_data = {
@@ -70,6 +70,9 @@ app.get('/binance/ohlc/:symbol/:interval', function(req, res) {
 
       res.send(ohlc_data);
     })
+	.catch(err => {
+		console.log('App2.js Read data from Redis Error')
+	})
 });
 
 app.get('/binance/symbols', function(req, res) {

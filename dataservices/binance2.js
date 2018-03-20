@@ -41,21 +41,29 @@ async function initOCLH(symbols) {
       client.del(`binance_${ symbol }_${ interval }_bqv`)
 
       await sleep(500);
-      let result = await axios.get(url);
-      let items = result.data
-      items.forEach(item => {
-        //Update to Redis Cache
-        // startTime - startTime, o, c, l, h, vol, quotevol, buyvol, vuyquotevol
-        client.rpush(`binance_${ symbol }_${ interval }_t`, item[0])
-        client.rpush(`binance_${ symbol }_${ interval }_o`, item[1])
-        client.rpush(`binance_${ symbol }_${ interval }_h`, item[2])
-        client.rpush(`binance_${ symbol }_${ interval }_l`, item[3])
-        client.rpush(`binance_${ symbol }_${ interval }_c`, item[4])
-        client.rpush(`binance_${ symbol }_${ interval }_v`, item[5])
-        client.rpush(`binance_${ symbol }_${ interval }_qv`, item[7])
-        client.rpush(`binance_${ symbol }_${ interval }_bv`, item[9])
-        client.rpush(`binance_${ symbol }_${ interval }_bqv`, item[10])
-      })
+	  try {
+		  
+		  let result = await axios.get(url);
+		  let items = result.data
+		  
+		  items.forEach(item => {
+			//Update to Redis Cache
+			// startTime - startTime, o, c, l, h, vol, quotevol, buyvol, vuyquotevol
+			client.rpush(`binance_${ symbol }_${ interval }_t`, item[0])
+			client.rpush(`binance_${ symbol }_${ interval }_o`, item[1])
+			client.rpush(`binance_${ symbol }_${ interval }_h`, item[2])
+			client.rpush(`binance_${ symbol }_${ interval }_l`, item[3])
+			client.rpush(`binance_${ symbol }_${ interval }_c`, item[4])
+			client.rpush(`binance_${ symbol }_${ interval }_v`, item[5])
+			client.rpush(`binance_${ symbol }_${ interval }_qv`, item[7])
+			client.rpush(`binance_${ symbol }_${ interval }_bv`, item[9])
+			client.rpush(`binance_${ symbol }_${ interval }_bqv`, item[10])
+		  })
+		  
+	  } catch (err) {
+		  console.log(err)
+		  continue
+	  }
     }
   }
   
@@ -78,6 +86,10 @@ function getTicker () {
 			client.set('binance_symbols', '' + result)
 			console.log('get all symbols done')
 			eventEmitter.emit('binance_tickers', result);
+		})
+		.catch(err => {
+			console.log('Get Ticker Error')
+			console.log(err)
 		})
 }
 
