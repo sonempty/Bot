@@ -30,7 +30,12 @@ async function initOCLH(symbols) {
     for (let symbol of symbols) {
       let limit = 200;
       let url = `${ BINANCE_BASE_URL }klines?symbol=${ symbol }&interval=${ interval }&limit=${ limit }`;
-      client.del(`binance_${ symbol }_${ interval }_t`)
+
+      await sleep(500);
+      let result = await axios.get(url);
+      let items = result.data
+	  
+	  client.del(`binance_${ symbol }_${ interval }_t`)
       client.del(`binance_${ symbol }_${ interval }_o`)
       client.del(`binance_${ symbol }_${ interval }_h`)
       client.del(`binance_${ symbol }_${ interval }_l`)
@@ -39,10 +44,7 @@ async function initOCLH(symbols) {
       client.del(`binance_${ symbol }_${ interval }_qv`)
       client.del(`binance_${ symbol }_${ interval }_bv`)
       client.del(`binance_${ symbol }_${ interval }_bqv`)
-
-      await sleep(500);
-      let result = await axios.get(url);
-      let items = result.data
+	  
       items.forEach(item => {
         //Update to Redis Cache
         // startTime - startTime, o, c, l, h, vol, quotevol, buyvol, vuyquotevol
