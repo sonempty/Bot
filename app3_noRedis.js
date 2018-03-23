@@ -56,7 +56,7 @@ async function initOCLH(symbols) {
 		  continue
 	  }
 	  
-	  await sleep(550);
+	  await sleep(500);
     }
   }
   
