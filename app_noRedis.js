@@ -78,7 +78,7 @@ function getTicker () {
 				baseAsset = item.baseAsset,
 				quoteAsset = item.quoteAsset
 				
-				result.push({symbol, baseAsset, quoteAsset, exchange: 'binance'});
+				if(symbol !== '123') result.push({symbol, baseAsset, quoteAsset, exchange: 'binance'});
 			})
 			console.log('get all symbols done')
 			tickers = result
