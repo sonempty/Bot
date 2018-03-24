@@ -21,7 +21,9 @@ eventEmitter.on('init_done', getTicker);
 //Init <limit> records for each interval and coin
 async function initOCLH(symbols) {
   for (let interval of ['15m', '1h', '4h', '1d']) {
-    for (let symbol of symbols) {
+    for (let item in symbols) {
+		
+	let symbol = symbols.symbol
       let limit = 200;
       let url = `${ BINANCE_BASE_URL }klines?symbol=${ symbol }&interval=${ interval }&limit=${ limit }`;
 	  
@@ -71,9 +73,11 @@ function getTicker () {
 	axios.get(BINANCE_INFOR_URL)
 		.then(datas => {
 			datas.data.symbols.forEach( item => {
-				let symbol = item.symbol;
-				//if(item.quoteAsset == 'BTC' || item.quoteAsset == 'USDT') {}
-				result.push(symbol);
+				let symbol = item.symbol,
+				baseAsset = item.baseAsset,
+				quoteAsset = item.quoteAsset
+				
+				result.push({symbol, baseAsset, quoteAsset, exchange: 'binance'});
 			})
 			console.log('get all symbols done')
 			tickers = result
