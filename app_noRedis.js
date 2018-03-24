@@ -21,9 +21,8 @@ eventEmitter.on('init_done', getTicker);
 //Init <limit> records for each interval and coin
 async function initOCLH(symbols) {
   for (let interval of ['15m', '1h', '4h', '1d']) {
-    for (let item in symbols) {
-		
-	let symbol = symbols.symbol
+    for (let item of symbols) {
+	  let symbol = item.symbol
       let limit = 200;
       let url = `${ BINANCE_BASE_URL }klines?symbol=${ symbol }&interval=${ interval }&limit=${ limit }`;
 	  
@@ -60,6 +59,8 @@ async function initOCLH(symbols) {
 	  
 	  await sleep(500);
     }
+	
+	console.log('Done interval! - ', interval, new Date().toLocaleString())
   }
   
   console.log('Done a process! - ' + new Date().toLocaleString())
