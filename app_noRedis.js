@@ -76,9 +76,10 @@ function getTicker () {
 			datas.data.symbols.forEach( item => {
 				let symbol = item.symbol,
 				baseAsset = item.baseAsset,
-				quoteAsset = item.quoteAsset
+				quoteAsset = item.quoteAsset,
+				string = baseAsset + '/' + quoteAsset
 				
-				if(symbol !== '123') result.push({symbol, baseAsset, quoteAsset, exchange: 'binance'});
+				if(symbol !== '123') result.push({symbol, baseAsset, quoteAsset, string, exchange: 'binance'});
 			})
 			console.log('get all symbols done')
 			tickers = result
