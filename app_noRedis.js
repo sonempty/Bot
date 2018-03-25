@@ -9,7 +9,7 @@ const BINANCE_BASE_URL = 'https://api.binance.com/api/v1/';
 const BINANCE_INFOR_URL = 'https://api.binance.com/api/v1/exchangeInfo';
 let stores = {};
 let tickers = [];
-let scores = []
+let scores = {}
 
 // Indicator
 const { SMA } = require('./socialbot/indicators/sma')
@@ -31,31 +31,32 @@ async function initOCLH(symbols) {
 	  let symbol = item.symbol
       let limit = 200;
       let url = `${ BINANCE_BASE_URL }klines?symbol=${ symbol }&interval=${ interval }&limit=${ limit }`
+	  let t,o,h,l,c,v,qv,bv,bqv
 	  
 	  try { 
 		  let result = await axios.get(url);
 		  let items = result.data
-		  let t = stores[`binance_${ symbol }_${ interval }_t`] = []
-		  let o = stores[`binance_${ symbol }_${ interval }_o`] = []
-		  let h = stores[`binance_${ symbol }_${ interval }_h`] = []
-		  let l = stores[`binance_${ symbol }_${ interval }_l`] = []
-		  let c = stores[`binance_${ symbol }_${ interval }_c`] = []
-		  let v = stores[`binance_${ symbol }_${ interval }_v`] = []
-		  let qv = stores[`binance_${ symbol }_${ interval }_qv`] = []
-		  let bv = stores[`binance_${ symbol }_${ interval }_bv`] = []
-		  let bqv = stores[`binance_${ symbol }_${ interval }_bqv`] = []
+		  t = stores[`binance_${ symbol }_${ interval }_t`] = []
+		  o = stores[`binance_${ symbol }_${ interval }_o`] = []
+		  h = stores[`binance_${ symbol }_${ interval }_h`] = []
+		  l = stores[`binance_${ symbol }_${ interval }_l`] = []
+		  c = stores[`binance_${ symbol }_${ interval }_c`] = []
+		  v = stores[`binance_${ symbol }_${ interval }_v`] = []
+		  qv = stores[`binance_${ symbol }_${ interval }_qv`] = []
+		  bv = stores[`binance_${ symbol }_${ interval }_bv`] = []
+		  bqv = stores[`binance_${ symbol }_${ interval }_bqv`] = []
 		  
 		  items.forEach(item => {
 			// startTime - startTime, o, c, l, h, vol, quotevol, buyvol, vuyquotevol
-			t.push(item[0])
-			o.push(item[1])
-			h.push(item[2])
-			l.push(item[3])
-			c.push(item[4])
-			v.push(item[5])
-			qv.push(item[7])
-			bv.push(item[9])
-			bqv.push(item[10])
+			t.push(+item[0])
+			o.push(+item[1])
+			h.push(+item[2])
+			l.push(+item[3])
+			c.push(+item[4])
+			v.push(+item[5])
+			qv.push(+item[7])
+			bv.push(+item[9])
+			bqv.push(+item[10])
 		  })
 		  
 	  } catch (err) {
@@ -69,10 +70,13 @@ async function initOCLH(symbols) {
 			
 			let bot_data = bot(t, macd[0], stochrsi[0])
 			
+			if(!scores[interval]) 			scores[interval] = {}
+		    if(!scores[interval][symbol]) 	scores[interval][symbol] = {}
+			
 			if(bot_data.buy_final) {
-				stores[symbol] =  {type: 'BUY', score: bot_data.buy_count, time: new Date(t[bot_data.buy_final]).toLocaleString() } 
+				scores[interval][symbol] =  {symbol, interval, index: bot_data.buy_final, type: 'BUY', score: bot_data.buy_count, time: new Date(t[bot_data.buy_final]).toLocaleString() } 
 			} else {
-				stores[symbol] =  {type: 'SELL', score: bot_data.sell_count, time: new Date(t[bot_data.sell_final]).toLocaleTimeString()}
+				scores[interval][symbol] =  {symbol, interval, index: bot_data.sell_final, type: 'SELL', score: bot_data.sell_count, time: new Date(t[bot_data.sell_final]).toLocaleString()}
 			}
 
 		} catch(err) {
@@ -204,7 +208,9 @@ function bot(t, macd, stochrsi){
 		for(let i = sell_index; i < macd.length; i++) {
 			if( macd[i] >= macd[i - 1]) {
 				sell_count++
-				if(stochrsi[i] > 70) sell_final = i
+				if(stochrsi[i] > 70){
+					sell_final = i
+				}
 			}
 		}
 		
