@@ -1,7 +1,5 @@
-const technicalindicators = require('technicalindicators');
-const SMA = technicalindicators.SMA;
-const RSI = technicalindicators.RSI;
-const MACD = technicalindicators.MACD;
+const { STOCHRSI } = require('./indicators/stochrsi')
+const { MACD } = require('./indicators/macd')
 
 // Redis Client to read Data
 let redis = require('redis');
@@ -26,7 +24,7 @@ function calculateIndicator(err, symbols) {
 	}
 
   let symbol_list = symbols.split(',')
-  let intervals = ['15m', '30m', '1h', '4h', '1d']
+  let intervals = ['1h']
   intervals.forEach(interval => {
     symbol_list.forEach(symbol => {
 			Promise.all([
@@ -59,10 +57,6 @@ function calculateIndicator(err, symbols) {
 					client.del(`binance_${ symbol }_${ interval }_sma20`)
 					client.rpush(`binance_${ symbol }_${ interval }_sma20`, x)
 				})
-
-				let rsi = RSI.calculate({period:14, values:c})
-
-				let macd = MACD.calculate({fastPeriod:12, slowPeriod:26, signalPeriod:9, values:c, SimpleMAOscillator:false, SimpleMASignal:false})
 
 			})
     })
