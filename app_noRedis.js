@@ -231,7 +231,6 @@ function bot(t, c, macd, stochrsi){
 			}
 		}
 	}
-	console.log(pre_index, sell_index, buy_index)
 	
 	if(buy_index) {
 		for(let i = buy_index; i < macd.length; i++) {
@@ -242,9 +241,8 @@ function bot(t, c, macd, stochrsi){
 				}
 			}
 		}
-		
 		let m = Math.max(...c.slice(pre_index, buy_index + 1))
-		pre_index = c.slice[pre_index, buy_index + 1].lastIndexOf(m)
+		pre_index = c.slice(pre_index, buy_index + 1).lastIndexOf(m)
 		change_from_pre = m/c[buy_final] - 1
 		
 		return { buy_index, buy_final, buy_count, change_from_pre, pre_index }
@@ -259,9 +257,8 @@ function bot(t, c, macd, stochrsi){
 				}
 			}
 		}
-		
-		let m = Math.min(...c.slice(pre_index, buy_index + 1))
-		pre_index = c.slice[pre_index, sell_index + 1].lastIndexOf(m)
+		let m = Math.min(...c.slice(pre_index, sell_index + 1))
+		pre_index = c.slice(pre_index, sell_index + 1).lastIndexOf(m)
 		change_from_pre = 1 - m/c[sell_final]
 		
 		return { sell_index, sell_final, sell_count, change_from_pre, pre_index }
