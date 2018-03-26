@@ -60,7 +60,7 @@ async function initOCLH(symbols) {
 		  })
 		  
 	  } catch (err) {
-		  console.log(err)
+		  console.log(symbol, interval, err.message)
 		  continue
 	  }
 	  
@@ -82,7 +82,8 @@ async function initOCLH(symbols) {
 			}
 
 		} catch(err) {
-			console.log(err.message)
+			console.log(symbol, interval, err.message)
+			continue
 		}
 		  
 	  await sleep(500);
