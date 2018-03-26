@@ -101,7 +101,7 @@ async function initOCLH(symbols) {
 			}
 
 		} catch(err) {
-			console.log(symbol, interval, err.message)
+			console.log(symbol, interval, 'BOT ERR', err.message)
 			continue
 		}
 		  
@@ -197,7 +197,7 @@ app.listen(app.get('port'), function() {
 function bot(t, c, macd, stochrsi){
 	
 
-	let buy_index = 1, sell_index = 0
+	let buy_index = 0, sell_index = 0
 	let buy_count = 0, sell_count = 0
 	let buy_final = 199, sell_final = 199
 	let change_from_pre = 0, pre_index = 0
@@ -231,6 +231,7 @@ function bot(t, c, macd, stochrsi){
 			}
 		}
 	}
+	console.log(pre_index, sell_index, buy_index)
 	
 	if(buy_index) {
 		for(let i = buy_index; i < macd.length; i++) {
@@ -242,7 +243,7 @@ function bot(t, c, macd, stochrsi){
 			}
 		}
 		
-		let m = Math.max(...c.slice[pre_index, buy_index + 1])
+		let m = Math.max(...c.slice(pre_index, buy_index + 1))
 		pre_index = c.slice[pre_index, buy_index + 1].lastIndexOf(m)
 		change_from_pre = m/c[buy_final] - 1
 		
@@ -259,7 +260,7 @@ function bot(t, c, macd, stochrsi){
 			}
 		}
 		
-		let m = Math.min(...c.slice[pre_index, sell_index + 1])
+		let m = Math.min(...c.slice(pre_index, buy_index + 1))
 		pre_index = c.slice[pre_index, sell_index + 1].lastIndexOf(m)
 		change_from_pre = 1 - m/c[sell_final]
 		
