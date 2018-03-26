@@ -82,7 +82,8 @@ async function initOCLH(symbols) {
 										score: bot_data.buy_count,
 										time: new Date(t[bot_data.buy_final]).toLocaleString(),
 										pre_index: bot_data.pre_index,
-										change_from_pre: bot_data.change_from_pre
+										change_from_pre: bot_data.change_from_pre,
+										pre_pre:  bot_data.pre_pre
 										} 
 										
 			} else if(bot_data.sell_final){
@@ -94,7 +95,8 @@ async function initOCLH(symbols) {
 										score: bot_data.sell_count,
 										time: new Date(t[bot_data.sell_final]).toLocaleString(),
 										pre_index: bot_data.pre_index,
-										change_from_pre: bot_data.change_from_pre
+										change_from_pre: bot_data.change_from_pre,
+										pre_pre:  bot_data.pre_pre
 										}
 			} else {
 				console.log(symbol, interval, 'RSI deo match', bot_data)
@@ -200,7 +202,7 @@ function bot(t, c, macd, stochrsi){
 	let buy_index = 0, sell_index = 0
 	let buy_count = 0, sell_count = 0
 	let buy_final = 199, sell_final = 199
-	let change_from_pre = 0, pre_index = 0
+	let change_from_pre = 0, pre_index = 0, pre_pre = 0
 	let counter = 0
 	
 	let last = macd[macd.length - 1]
@@ -224,9 +226,13 @@ function bot(t, c, macd, stochrsi){
 					continue
 				}
 			}
-		} else {
+		} else if (counter == 1) {
 			if(macd[i]*macd[i-1] < 0) {
 				pre_index = i
+			}
+		} else {
+			if(macd[i]*macd[i-1] < 0) {
+				pre_pre = i
 				break
 			}
 		}
@@ -241,11 +247,14 @@ function bot(t, c, macd, stochrsi){
 				}
 			}
 		}
+		let k = Math.min(...c.slice(pre_pre, pre_index + 1))
+		pre_pre += c.slice(pre_pre, pre_index + 1).lastIndexOf(k)
+		
 		let m = Math.max(...c.slice(pre_index, buy_index + 1))
 		pre_index += c.slice(pre_index, buy_index + 1).lastIndexOf(m)
 		change_from_pre = m/c[buy_final] - 1
 		
-		return { buy_index, buy_final, buy_count, change_from_pre, pre_index }
+		return { buy_index, buy_final, buy_count, change_from_pre, pre_index, pre_pre }
 	}
 
 	if(sell_index) {
@@ -257,11 +266,14 @@ function bot(t, c, macd, stochrsi){
 				}
 			}
 		}
+		let k = Math.max(...c.slice(pre_pre, pre_index + 1))
+		pre_pre += c.slice(pre_pre, pre_index + 1).lastIndexOf(k)
+		
 		let m = Math.min(...c.slice(pre_index, sell_index + 1))
 		pre_index += c.slice(pre_index, sell_index + 1).lastIndexOf(m)
-		change_from_pre = 1 - m/c[sell_final]
+		change_from_pre = c[sell_final]/m - 1
 		
-		return { sell_index, sell_final, sell_count, change_from_pre, pre_index }
+		return { sell_index, sell_final, sell_count, change_from_pre, pre_index, pre_pre }
 	}
 }
 
