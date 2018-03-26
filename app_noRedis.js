@@ -78,7 +78,7 @@ async function initOCLH(symbols) {
 			} else if(bot_data.sell_final){
 				scores[interval][symbol] =  {symbol, interval, index: bot_data.sell_final, type: 'SELL', score: bot_data.sell_count, time: new Date(t[bot_data.sell_final]).toLocaleString()}
 			} else {
-				console.log(symbol, interval, 'Loi CMNR', bot_data)
+				console.log(symbol, interval, 'RSI deo match', bot_data)
 			}
 
 		} catch(err) {
