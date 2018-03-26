@@ -68,15 +68,34 @@ async function initOCLH(symbols) {
 			let stochrsi = STOCHRSI(c, 14, 14, 3, 3)
 			let macd = MACD(c, 12, 26, 9)
 			
-			let bot_data = bot(t, macd[0], stochrsi[0])
+			let bot_data = bot(t, c, macd[0], stochrsi[0])
 			
 			if(!scores[interval]) 			scores[interval] = {}
 		    if(!scores[interval][symbol]) 	scores[interval][symbol] = {}
 			
 			if(bot_data.buy_final) {
-				scores[interval][symbol] =  {symbol, interval, index: bot_data.buy_final, type: 'BUY', score: bot_data.buy_count, time: new Date(t[bot_data.buy_final]).toLocaleString() } 
+				scores[interval][symbol] =  {
+										symbol,
+										interval,
+										index: bot_data.buy_final,
+										type: 'BUY',
+										score: bot_data.buy_count,
+										time: new Date(t[bot_data.buy_final]).toLocaleString(),
+										pre_index: bot_data.pre_index,
+										change_from_pre: bot_data.change_from_pre
+										} 
+										
 			} else if(bot_data.sell_final){
-				scores[interval][symbol] =  {symbol, interval, index: bot_data.sell_final, type: 'SELL', score: bot_data.sell_count, time: new Date(t[bot_data.sell_final]).toLocaleString()}
+				scores[interval][symbol] =  {
+										symbol,
+										interval,
+										index: bot_data.sell_final,
+										type: 'SELL',
+										score: bot_data.sell_count,
+										time: new Date(t[bot_data.sell_final]).toLocaleString()
+										pre_index: bot_data.pre_index,
+										change_from_pre: bot_data.change_from_pre
+										}
 			} else {
 				console.log(symbol, interval, 'RSI deo match', bot_data)
 			}
@@ -175,29 +194,41 @@ app.listen(app.get('port'), function() {
 });
 
 
-function bot(t, macd, stochrsi){
+function bot(t, c, macd, stochrsi){
 	
 
-	let buy_index = 0, sell_index = 0
+	let buy_index = 1, sell_index = 0
 	let buy_count = 0, sell_count = 0
-	let buy_final = 0, sell_final = 0
+	let buy_final = 199, sell_final = 199
+	let change_from_pre = 0, pre_index = 0
+	let counter = 0
 	
 	let last = macd[macd.length - 1]
 
 	for(let i = macd.length -1; i>=1; i--){
-		if(macd[i]*macd[i-1] <= 0) {
-			if(macd[i] > 0 ) {
-				sell_index = i
-			} else if(macd[i] < 0) {
-				buy_index = i
-			} else if(macd[i-1] > 0) {
-				buy_index = i
-			} else if(macd[i-1] < 0){
-				sell_index = i
-			} else {
-				continue
+		if(!counter) {
+			if(macd[i]*macd[i-1] <= 0) {
+				if(macd[i] > 0 ) {
+					sell_index = i
+					counter++
+				} else if(macd[i] < 0) {
+					buy_index = i
+					counter++
+				} else if(macd[i-1] > 0) {
+					buy_index = i
+					counter++
+				} else if(macd[i-1] < 0){
+					sell_index = i
+					counter++
+				} else {
+					continue
+				}
 			}
-			break
+		} else {
+			if(macd[i]*macd[i-1] < 0) {
+				pre_index = i
+				break
+			}
 		}
 	}
 	
@@ -210,7 +241,12 @@ function bot(t, macd, stochrsi){
 				}
 			}
 		}
-		return { buy_index, buy_final, buy_count }
+		
+		let m = Math.max(...c.slice[pre_index, buy_index + 1])
+		pre_index = c.slice[pre_index, buy_index + 1].lastIndexOf(m)
+		change_from_pre = m/c[buy_final] - 1
+		
+		return { buy_index, buy_final, buy_count, change_from_pre, pre_index }
 	}
 
 	if(sell_index) {
@@ -223,7 +259,11 @@ function bot(t, macd, stochrsi){
 			}
 		}
 		
-		return { sell_index, sell_final, sell_count }
+		let m = Math.min(...c.slice[pre_index, sell_index + 1])
+		pre_index = c.slice[pre_index, sell_index + 1].lastIndexOf(m)
+		change_from_pre = 1 - m/c[sell_final]
+		
+		return { sell_index, sell_final, sell_count, change_from_pre, pre_index }
 	}
 }
 
