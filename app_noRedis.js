@@ -75,8 +75,10 @@ async function initOCLH(symbols) {
 			
 			if(bot_data.buy_final) {
 				scores[interval][symbol] =  {symbol, interval, index: bot_data.buy_final, type: 'BUY', score: bot_data.buy_count, time: new Date(t[bot_data.buy_final]).toLocaleString() } 
-			} else {
+			} else if(bot_data.buy_final){
 				scores[interval][symbol] =  {symbol, interval, index: bot_data.sell_final, type: 'SELL', score: bot_data.sell_count, time: new Date(t[bot_data.sell_final]).toLocaleString()}
+			} else {
+				console.log('Loi CMNR', bot_data)
 			}
 
 		} catch(err) {
