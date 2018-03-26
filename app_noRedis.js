@@ -229,6 +229,9 @@ function bot(t, c, macd, stochrsi){
 		} else if (counter == 1) {
 			if(macd[i]*macd[i-1] < 0) {
 				pre_index = i
+				counter++
+			} else {
+				continue
 			}
 		} else {
 			if(macd[i]*macd[i-1] < 0) {
