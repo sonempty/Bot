@@ -78,7 +78,7 @@ async function initOCLH(symbols) {
 			} else if(bot_data.buy_final){
 				scores[interval][symbol] =  {symbol, interval, index: bot_data.sell_final, type: 'SELL', score: bot_data.sell_count, time: new Date(t[bot_data.sell_final]).toLocaleString()}
 			} else {
-				console.log('Loi CMNR', bot_data)
+				console.log(symbol, interval, 'Loi CMNR', bot_data)
 			}
 
 		} catch(err) {
@@ -188,8 +188,14 @@ function bot(t, macd, stochrsi){
 		if(macd[i]*macd[i-1] <= 0) {
 			if(macd[i] > 0 ) {
 				sell_index = i
-			} else {
+			} else if(macd[i] < 0) {
 				buy_index = i
+			} else if(macd[i-1] > 0) {
+				buy_index = i
+			} else if(macd[i-1] < 0){
+				sell_index = i
+			} else {
+				continue
 			}
 			break
 		}
