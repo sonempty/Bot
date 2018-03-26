@@ -92,7 +92,7 @@ async function initOCLH(symbols) {
 										index: bot_data.sell_final,
 										type: 'SELL',
 										score: bot_data.sell_count,
-										time: new Date(t[bot_data.sell_final]).toLocaleString()
+										time: new Date(t[bot_data.sell_final]).toLocaleString(),
 										pre_index: bot_data.pre_index,
 										change_from_pre: bot_data.change_from_pre
 										}
