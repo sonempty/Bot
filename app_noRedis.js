@@ -210,7 +210,7 @@ function bot(t, macd, stochrsi){
 				}
 			}
 		}
-		return { buy_final, buy_count }
+		return { buy_index, buy_final, buy_count }
 	}
 
 	if(sell_index) {
@@ -223,7 +223,7 @@ function bot(t, macd, stochrsi){
 			}
 		}
 		
-		return { sell_final, sell_count }
+		return { sell_index, sell_final, sell_count }
 	}
 }
 
