@@ -176,6 +176,7 @@ app.get('/binance/ohlc/:symbol/:interval', function(req, res) {
   ohlc_data.bv 		= stores[`binance_${ symbol }_${ interval }_bv`];
   ohlc_data.bqv 	= stores[`binance_${ symbol }_${ interval }_bqv`];
   ohlc_data.score 	= scores[interval][symbol];
+  console.log(scores[interval][symbol])
 
   res.send(ohlc_data);
   
