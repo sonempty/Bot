@@ -104,7 +104,7 @@ async function initOCLH(symbols) {
 										
 										index: bot_data.sell_final,
 										close_price: c[bot_data.sell_final],
-										time: t[bot_data.sell_final]
+										time: t[bot_data.sell_final],
 										
 										pre_index: bot_data.pre_index,
 										pre_close_price: c[bot_data.pre_index],
