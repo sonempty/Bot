@@ -164,15 +164,6 @@ app.get('/binance/ohlc/:symbol/:interval', function(req, res) {
     api_name: 'ohlc',
     symbol: symbol,
     interval: interval,
-    t: [],
-    o: [],
-    h: [],
-    l: [],
-    c: [],
-    v: [],
-    qv: [],
-    bv: [],
-    bqv: []
   };
 
   ohlc_data.t 		= stores[`binance_${ symbol }_${ interval }_t`];
@@ -184,7 +175,8 @@ app.get('/binance/ohlc/:symbol/:interval', function(req, res) {
   ohlc_data.qv 		= stores[`binance_${ symbol }_${ interval }_qv`];
   ohlc_data.bv 		= stores[`binance_${ symbol }_${ interval }_bv`];
   ohlc_data.bqv 	= stores[`binance_${ symbol }_${ interval }_bqv`];
-  
+  ohlc_data.score 	= scores[interval][symbol];
+
   res.send(ohlc_data);
   
 });
