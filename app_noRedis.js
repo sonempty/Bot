@@ -145,7 +145,16 @@ let app = require('express')();
 const cors = require('cors');
 app.use(cors());
 
-app.set('port', (process.env.PORT || 5000));
+let https = require('https')
+let fs = require('fs')
+let options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/telepot.xyz/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/telepot.xyz/cert.pem'),
+  ca: fs.readFileSync('/etc/letsencrypt/live/telepot.xyz/fullchain.pem')
+}
+
+//no SSL
+//app.set('port', (process.env.PORT || 5000));
 
 app.get('/binance/ohlc/:symbol/:interval', function(req, res) {
   // i.e.: http://localhost:5000/binance/ohlc/btcusdt/1h
@@ -190,10 +199,13 @@ app.get('/binance/tickers', function(req, res) {
   res.send(tickers)
 });
 
-
+/*
+//No SSL
 app.listen(app.get('port'), function() {
   console.log('Server listening on port: ', app.get('port'));
 });
+*/
+https.createServer(options, app).listen(5000);
 
 
 function bot(t, c, macd, stochrsi){
