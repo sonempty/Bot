@@ -77,26 +77,44 @@ async function initOCLH(symbols) {
 				scores[interval][symbol] =  {
 										symbol,
 										interval,
-										index: bot_data.buy_final,
 										type: 'BUY',
 										score: bot_data.buy_count,
-										time: new Date(t[bot_data.buy_final]).toLocaleString(),
+										
+										index: bot_data.buy_final,
+										close_price: c[bot_data.buy_final],
+										time: t[bot_data.buy_final],
+										
 										pre_index: bot_data.pre_index,
+										pre_close_price: c[bot_data.pre_index],
+										pre_time: t[bot_data.pre_index],
+										
 										change_from_pre: bot_data.change_from_pre,
-										pre_pre:  bot_data.pre_pre
+										
+										pre_pre:  bot_data.pre_pre,
+										pre_pre_close_price: c[bot_data.pre_pre],
+										pre_pre_time: t[bot_data.pre_pre],
 										} 
 										
 			} else if(bot_data.sell_final){
 				scores[interval][symbol] =  {
 										symbol,
 										interval,
-										index: bot_data.sell_final,
 										type: 'SELL',
 										score: bot_data.sell_count,
-										time: new Date(t[bot_data.sell_final]).toLocaleString(),
+										
+										index: bot_data.sell_final,
+										close_price: c[bot_data.sell_final],
+										time: t[bot_data.sell_final]
+										
 										pre_index: bot_data.pre_index,
+										pre_close_price: c[bot_data.pre_index],
+										pre_time: t[bot_data.pre_index],
+										
 										change_from_pre: bot_data.change_from_pre,
-										pre_pre:  bot_data.pre_pre
+										
+										pre_pre:  bot_data.pre_pre,
+										pre_pre_close_price: c[bot_data.pre_pre],
+										pre_pre_time: t[bot_data.pre_pre],
 										}
 			} else {
 				console.log(symbol, interval, 'RSI deo match', bot_data)
@@ -176,8 +194,6 @@ app.get('/binance/ohlc/:symbol/:interval', function(req, res) {
   ohlc_data.bv 		= stores[`binance_${ symbol }_${ interval }_bv`];
   ohlc_data.bqv 	= stores[`binance_${ symbol }_${ interval }_bqv`];
   ohlc_data.score 	= scores[interval][symbol];
-  console.log(scores[interval][symbol])
-
   res.send(ohlc_data);
   
 });
